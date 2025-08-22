@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GrowTrackr Poultry — Chicks & Hens Sales + Daily Weight Updates</title>
+  <meta name="description" content="Poultry sales website for chicks and hens with daily weight update tracker (auto date & time)." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 15c4-2 6-2 9-8 3 6 5 6 9 8 0 0-2 2-9 6-7-4-9-6-9-6Z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>GrowTrackr Poultry</span>
+        <span class="pill">Final-Year Project</span>
+      </div>
+      <nav>
+        <a href="#shop">Shop</a>
+        <a href="#weight">Weight Updates</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <h1>Fresh Chicks & Healthy Hens — tracked daily with <span style="color:var(--brand)">live weight updates</span>.</h1>
+        <p>Simple e-commerce style page for selling chicks and hens. Record daily weights with the current India time automatically.</p>
+        <div class="cta">
+          <a class="btn" href="#shop">View Products</a>
+          <a class="btn secondary" href="#weight">Open Weight Tracker</a>
+          <span class="clock" id="clock">--:-- — -- --- ----</span>
+        </div>
+        <p class="small">Clock shows <strong>Asia/Kolkata (IST)</strong>.</p>
+      </div>
+      <div class="card pad">
+        <div class="grid cols-2">
+          <div class="product card">
+            <div class="img"></div>
+            <div class="body">
+              <strong>Day-old Chicks</strong>
+              <span class="muted">Starter breed, vaccinated</span>
+              <div class="price">₹60 / chick</div>
+            </div>
+          </div>
+          <div class="product card">
+            <div class="img hen"></div>
+            <div class="body">
+              <strong>Laying Hens</strong>
+              <span class="muted">18–22 weeks, high-lay</span>
+              <div class="price">₹520 / hen</div>
+            </div>
+          </div>
+        </div>
+        <p class="small">* Prices are demo values; change as needed.</p>
+      </div>
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop" class="grid cols-3">
+      <article class="product card">
+        <div class="img"></div>
+        <div class="body">
+          <h3>Broiler Chicks</h3>
+          <p class="muted">Fast growth · 1 day old</p>
+          <div class="price">₹65</div>
+        </div>
+      </article>
+      <article class="product card">
+        <div class="img hen"></div>
+        <div class="body">
+          <h3>Country Hens</h3>
+          <p class="muted">Free-range · 20 weeks</p>
+          <div class="price">₹550</div>
+        </div>
+      </article>
+      <article class="product card">
+        <div class="img"></div>
+        <div class="body">
+          <h3>Grower Feed (50kg)</h3>
+          <p class="muted">Balanced nutrition</p>
+          <div class="price">₹1,950</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- WEIGHT TRACKER -->
+    <section id="weight" class="card pad">
+      <h2>Daily Weight Updates</h2>
+      <form id="weightForm" class="form">
+        <div class="field">
+          <label for="birdId">Bird / Batch ID</label>
+          <input class="input" id="birdId" required />
+        </div>
+        <div class="field">
+          <label for="age">Age (days)</label>
+          <input class="input" id="age" type="number" required />
+        </div>
+        <div class="field">
+          <label for="weightG">Weight (grams)</label>
+          <input class="input" id="weightG" type="number" required />
+        </div>
+        <div class="field">
+          <button class="btn" type="submit">Save Entry</button>
+        </div>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Bird/Batch</th>
+            <th>Age (d)</th>
+            <th>Weight (g)</th>
+          </tr>
+        </thead>
+        <tbody id="weightRows"></tbody>
+      </table>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="grid cols-2">
+      <div class="card pad">
+        <h3>Contact</h3>
+        <p>Phone: +91 12345 67890<br>Email: hello@growtrackr.example</p>
+      </div>
+      <div class="card pad">
+        <h3>About the Farm</h3>
+        <p>We raise healthy birds with proper bio-security, clean water, and balanced feed.</p>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> GrowTrackr Poultry — Final-Year Project
+    </footer>
+  </main>
+
+  <script>
+    // Live Clock
+    function updateClock() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const timeStr = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+      document.getElementById('clock').textContent = `${timeStr} — ${dateStr}`;
+    }
+    updateClock(); setInterval(updateClock, 1000);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Weight Tracker (simple demo)
+    const rowsEl = document.getElementById('weightRows');
+    const form = document.getElementById('weightForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const birdId = document.getElementById('birdId').value;
+      const age = document.getElementById('age').value;
+      const weightG = document.getElementById('weightG').value;
+      const now = new Date();
+      const date = now.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const time = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${date}</td><td>${time}</td><td>${birdId}</td><td>${age}</td><td>${weightG}</td>`;
+      rowsEl.appendChild(tr);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
